@@ -1,18 +1,12 @@
 package com.peim.hash;
 
-import com.peim.model.Task;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-class SHA256Algorithm implements HashAlgorithm {
+class SHA256Algorithm extends HashAlgorithm {
 
     @Override
-    public String hash(Task task) {
-        try {
-            Thread.sleep(3000);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "sha-256-hash";
+    protected MessageDigest getMessageDigest() throws NoSuchAlgorithmException {
+        return MessageDigest.getInstance("SHA-256");
     }
 }

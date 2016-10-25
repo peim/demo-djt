@@ -1,18 +1,12 @@
 package com.peim.hash;
 
-import com.peim.model.Task;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-class MD5Algorithm implements HashAlgorithm {
+class MD5Algorithm extends HashAlgorithm {
 
     @Override
-    public String hash(Task task) {
-        try {
-            Thread.sleep(2000);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "md5-hash";
+    protected MessageDigest getMessageDigest() throws NoSuchAlgorithmException {
+        return MessageDigest.getInstance("MD5");
     }
 }

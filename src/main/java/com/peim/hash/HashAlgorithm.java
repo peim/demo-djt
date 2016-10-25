@@ -1,8 +1,29 @@
 package com.peim.hash;
 
-import com.peim.model.Task;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-public interface HashAlgorithm {
+public abstract class HashAlgorithm {
 
-    String hash(Task task);
+    public String hash(String src) {
+        String hash;
+        try {
+            MessageDigest md = getMessageDigest();
+            md.update(src.getBytes());
+            byte byteData[] = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte element : byteData) {
+                sb.append(Integer.toString((element & 0xff) + 0x100, 16).substring(1));
+            }
+            hash = sb.toString();
+
+            Thread.sleep(2000);
+        }
+        catch (Exception e) {
+            hash = e.getMessage();
+        }
+        return hash;
+    }
+
+    protected abstract MessageDigest getMessageDigest() throws NoSuchAlgorithmException;
 }

@@ -6,12 +6,12 @@ import com.peim.service.TaskProcessingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
+
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 public class AsyncController {
@@ -34,20 +34,16 @@ public class AsyncController {
         );
 
         Task task = taskService.getTaskById(taskId);
-        ListenableFuture<String> future = taskProcessingService.process(task);
-        future.addCallback(new ListenableFutureCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                task.setStatus("SUCCESS");
-                task.setDescription(result);
-                deferredResult.setResult(ResponseEntity.ok(task));
-              }
-            @Override
-            public void onFailure(Throwable t) {
+        CompletableFuture<String> future = taskProcessingService.process(task);
+        future.whenComplete((success, failure) -> {
+            if (failure != null) {
                 task.setStatus("FAILURE");
-                task.setDescription(t.getMessage());
-                deferredResult.setResult(ResponseEntity.ok(task));
+                task.setDescription(failure.getMessage());
+            } else {
+                task.setStatus("SUCCESS");
+                task.setDescription(success);
             }
+            deferredResult.setResult(ResponseEntity.ok(task));
         });
 
         return deferredResult;
