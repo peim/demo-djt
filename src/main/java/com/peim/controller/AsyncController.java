@@ -1,8 +1,8 @@
 package com.peim.controller;
 
+import com.peim.dao.TaskService;
 import com.peim.model.Task;
 import com.peim.service.TaskProcessingService;
-import com.peim.service.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +23,15 @@ public class AsyncController {
     private TaskProcessingService taskProcessingService;
 
     @RequestMapping("/execute")
-    public DeferredResult<ResponseEntity<Task>> execute(final @RequestParam(value="taskId", required=true) int taskId) throws Exception {
+    public DeferredResult<ResponseEntity<Task>> execute(final @RequestParam(value="taskId") int taskId) throws Exception {
 
-        final DeferredResult<ResponseEntity<Task>> deferredResult = new DeferredResult<>(5000l);
-        deferredResult.onTimeout(() -> {
-            deferredResult.setErrorResult(ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout occurred."));
-        });
+        final DeferredResult<ResponseEntity<Task>> deferredResult = new DeferredResult<>(5000L);
+        deferredResult.onTimeout(
+                () -> deferredResult.setErrorResult(ResponseEntity
+                        .status(HttpStatus.REQUEST_TIMEOUT)
+                        .body("Request timeout occurred.")
+                )
+        );
 
         Task task = taskService.getTaskById(taskId);
         ListenableFuture<String> future = taskProcessingService.process(task);

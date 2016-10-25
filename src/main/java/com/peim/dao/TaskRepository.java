@@ -1,11 +1,11 @@
-package com.peim.service.task;
+package com.peim.dao;
 
 import com.peim.model.Task;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface TaskRepository extends CrudRepository<Task, Integer> {
+interface TaskRepository extends CrudRepository<Task, Integer> {
 
     List<Task> findByStatus(String status);
 

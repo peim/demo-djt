@@ -1,4 +1,4 @@
-package com.peim.service.task;
+package com.peim.dao;
 
 import com.peim.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;

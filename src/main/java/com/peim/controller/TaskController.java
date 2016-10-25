@@ -1,7 +1,7 @@
 package com.peim.controller;
 
 import com.peim.model.Task;
-import com.peim.service.task.TaskService;
+import com.peim.dao.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
