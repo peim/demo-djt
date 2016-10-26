@@ -6,14 +6,13 @@ import com.peim.service.TaskProcessingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.concurrent.CompletableFuture;
 
 @RestController
+@RequestMapping(path = "/api")
 public class AsyncController {
 
     @Autowired
@@ -22,8 +21,8 @@ public class AsyncController {
     @Autowired
     private TaskProcessingService taskProcessingService;
 
-    @RequestMapping("/execute")
-    public DeferredResult<ResponseEntity<Task>> execute(final @RequestParam(value="taskId") int taskId) throws Exception {
+    @RequestMapping(path = "/execute/task/{id}", method = RequestMethod.GET)
+    public DeferredResult<ResponseEntity<Task>> execute(@PathVariable(value = "id") int id) throws Exception {
 
         final DeferredResult<ResponseEntity<Task>> deferredResult = new DeferredResult<>(5000L);
         deferredResult.onTimeout(
@@ -33,7 +32,7 @@ public class AsyncController {
                 )
         );
 
-        Task task = taskService.getTaskById(taskId);
+        Task task = taskService.getTaskById(id);
         CompletableFuture<String> future = taskProcessingService.process(task);
         future.whenComplete((success, failure) -> {
             if (failure != null) {

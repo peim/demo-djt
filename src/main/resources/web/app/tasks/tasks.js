@@ -14,13 +14,32 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
   $scope.setTitleAndUrl('Список задач', '#/tasks');
 
   $scope.loadErrors = function() {
-    $http.get('api/task/all').
-      success(function(data) {
+    $http.get('api/task/all')
+      .success(function(data) {
         $scope.tasks = data;
-      }).
-      error(function(error) {
+      })
+      .error(function(error) {
         console.log(error);
       });
+  }
+
+  $scope.run = function(id) {
+    $http.get('api/execute/task/' + id)
+      .success(function(data) {
+        console.log(data);
+        $scope.task = data;
+      })
+      .error(function(error) {
+        console.log(error);
+      });
+  }
+
+  $scope.cancel = function(id) {
+    console.log("cancel task " + id);
+  }
+
+  $scope.delete = function(id) {
+    console.log("delete task " + id);
   }
 
   $scope.canRun = function(status) {
@@ -45,18 +64,6 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
     } else {
       return false;
     }
-  }
-
-  $scope.run = function(id) {
-    console.log("run task " + id);
-  }
-
-  $scope.cancel = function(id) {
-    console.log("cancel task " + id);
-  }
-
-  $scope.delete = function(id) {
-    console.log("delete task " + id);
   }
 
   $scope.loadErrors();
