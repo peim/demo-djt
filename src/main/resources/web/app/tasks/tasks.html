@@ -1,0 +1,27 @@
+<div class="container">
+  <h1>Список задач</h1>
+  <div>
+    <table border="1">
+      <tr>
+        <td>id</td>
+        <td>src</td>
+        <td>algo</td>
+        <td>status</td>
+        <td>description</td>
+        <td>run</td>
+        <td>cancel</td>
+        <td>delete</td>
+      </tr>
+      <tr data-ng-repeat="task in tasks">
+        <td>{{ task.id }}</td>
+        <td>{{ task.src }}</td>
+        <td>{{ task.algo }}</td>
+        <td>{{ task.status }}</td>
+        <td>{{ task.description }}</td>
+        <td><input type="button" value="run" data-ng-if="canRun(task.status)" data-ng-click="run(task.id)"></td>
+        <td><input type="button" value="cancel" data-ng-if="canCancel(task.status)" data-ng-click="cancel(task.id)"></td>
+        <td><input type="button" value="delete" data-ng-if="canDelete(task.status)" data-ng-click="delete(task.id)"></td>
+      </tr>
+    </table>
+  </div>
+</div>

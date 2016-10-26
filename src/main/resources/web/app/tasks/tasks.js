@@ -3,15 +3,15 @@
 angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/errors', {
-    templateUrl: 'components/tasks/tasks.html',
-    controller: 'ErrorListCtrl'
+  $routeProvider.when('/tasks', {
+    templateUrl: 'tasks/tasks.html',
+    controller: 'TasksCtrl'
   });
 }])
 
-.controller('ErrorListCtrl', ['$scope', '$http', '$location', function($scope, $http, $location) {
+.controller('TasksCtrl', ['$scope', '$http', '$location', function($scope, $http, $location) {
 
-  $scope.setTitleAndUrl('Список задач', '#/errors');
+  $scope.setTitleAndUrl('Список задач', '#/tasks');
 
   $scope.loadErrors = function() {
     $http.get('api/task/all').

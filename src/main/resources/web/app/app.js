@@ -2,14 +2,11 @@
 
 angular.module('app', [
   'ngRoute',
-  'app.tasks',
-  'app.task'
+  'app.tasks'
 ])
 
 .config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
-  $routeProvider.otherwise({redirectTo: '/errors'});
-  $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
-  $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
+  $routeProvider.otherwise({redirectTo: '/tasks'});
 }])
 
 .controller('MainCtrl', ['$scope', function($scope) {
