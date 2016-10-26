@@ -2,8 +2,8 @@
 
 angular.module('app', [
   'ngRoute',
-  'app.errorList',
-  'app.repError'
+  'app.tasks',
+  'app.task'
 ])
 
 .config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {

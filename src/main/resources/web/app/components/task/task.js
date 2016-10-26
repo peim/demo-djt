@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('app.repError', ['ngRoute'])
+angular.module('app.task', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/error/:errorId', {
-    templateUrl: 'components/rep-error/rep-error.html',
+    templateUrl: 'components/task/task.html',
     controller: 'RepErrorCtrl'
   });
 }])

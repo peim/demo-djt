@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('app.errorList', ['ngRoute', 'ui.bootstrap'])
+angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/errors', {
-    templateUrl: 'components/error-list/error-list.html',
+    templateUrl: 'components/tasks/tasks.html',
     controller: 'ErrorListCtrl'
   });
 }])
