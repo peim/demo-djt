@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbrepApp.repError', ['ngRoute'])
+angular.module('app.repError', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/error/:errorId', {

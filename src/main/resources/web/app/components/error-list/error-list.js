@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbrepApp.errorList', ['ngRoute', 'ui.bootstrap'])
+angular.module('app.errorList', ['ngRoute', 'ui.bootstrap'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/errors', {

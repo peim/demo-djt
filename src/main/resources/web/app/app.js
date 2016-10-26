@@ -1,15 +1,9 @@
 'use strict';
 
-// Declare app level module which depends on views, and components
-angular.module('dbrepApp', [
+angular.module('app', [
   'ngRoute',
-  'dbrepApp.errorList',
-  'dbrepApp.repError',
-  'dbrepApp.remotecall',
-  'dbrepApp.repErrorEdit',
-  'dbrepApp.remotecallEdit',
-  'dbrepApp.errorLogs',
-  'dbrepApp.errorLogDetail'
+  'app.errorList',
+  'app.repError'
 ])
 
 .config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
@@ -18,7 +12,7 @@ angular.module('dbrepApp', [
   $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
 }])
 
-.controller('MainCtrl', ['$scope', '$http', '$location', '$timeout', function($scope, $http, $location, $timeout) {
+.controller('MainCtrl', ['$scope', function($scope) {
   $scope.setTitleAndUrl = function(title, url) {
     $scope.title = title;
     $scope.url = url;
