@@ -3,8 +3,6 @@
 // Declare app level module which depends on views, and components
 angular.module('dbrepApp', [
   'ngRoute',
-  'ui.bootstrap',
-  'dbrepApp.services',
   'dbrepApp.errorList',
   'dbrepApp.repError',
   'dbrepApp.remotecall',
