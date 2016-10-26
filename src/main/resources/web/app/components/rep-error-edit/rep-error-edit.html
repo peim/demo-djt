@@ -1,0 +1,162 @@
+<div class="container">
+  <div class="rep-error-edit">
+    <a href="" class="back-btn visible-lg" ng-click="goToError()">
+      <span class="glyphicon glyphicon-arrow-left back-arrow"></span>
+      <span class="back-url">Назад</span>
+    </a>
+    <h4 class="error-heading">Редактирование ошибки</h4>
+    
+    <div class="row">
+      <div class="col-xs-6 col-md-offset-2 col-md-5 text-center sourcevalue">
+        Источник
+      </div>
+      <div class="col-xs-6 col-md-5 text-center destvalue">
+        Приемник
+      </div>
+    </div>
+    <div role="presentation" class="col-divider"></div>
+    
+    <form name="repErrorEditForm" novalidate>
+      <div ng-repeat="(key, column) in columns">
+        <div class="row">
+          <div class="col-xs-12 col-md-2">
+            <div class="columname">{{key}}</div>
+          </div>
+        
+          <div class="col-xs-12 col-md-10">
+            <div class="col-source pull-left">
+              <div class="input-group">
+                <!-- Integer -->
+                <input type="text" class="form-control" name="{{key}}" ng-init="(column.source == '<UNDEFINED>') && (inputDisabled = true)" ng-model="column.source" ng-if="column.type == 'int'" ng-class="{'null-input': isNullValue(column.source)}" ng-disabled="inputDisabled" ng-pattern="/^\d+$/">
+                <!-- Double -->
+                <input type="text" class="form-control" name="{{key}}" ng-init="(column.source == '<UNDEFINED>') && (inputDisabled = true)" ng-model="column.source" ng-if="column.type == 'double'" ng-class="{'null-input': isNullValue(column.source)}" ng-disabled="inputDisabled">
+                <!-- Date -->
+                <input type="text" class="form-control" name="{{key}}" ng-init="(column.source == '<UNDEFINED>') && (inputDisabled = true)" ng-model="column.source" ng-if="column.type == 'date'" ng-class="{'null-input': isNullValue(column.source)}" ng-disabled="inputDisabled" ng-pattern="/^((\d{4})-(\d{2})-(\d{2})|(\d{2})\/(\d{2})\/(\d{4}))$/">
+                <!-- Time -->
+                <input type="text" class="form-control" name="{{key}}" ng-init="(column.source == '<UNDEFINED>') && (inputDisabled = true)" ng-model="column.source" ng-if="column.type == 'time'" ng-class="{'null-input': isNullValue(column.source)}" ng-disabled="inputDisabled" ng-pattern="/^([0-1]\d|2[0-3])(:[0-5]\d){2}(\.\d{1,6})?((\+|\-)\d{2})?$/">
+                <!-- DateTime -->
+                <input type="text" class="form-control" name="{{key}}" ng-init="(column.source == '<UNDEFINED>') && (inputDisabled = true)" ng-model="column.source" ng-if="column.type == 'datetime'" ng-class="{'null-input': isNullValue(column.source)}" ng-disabled="inputDisabled" ng-pattern="/^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01]) ([0-1]\d|2[0-3])(:[0-5]\d){2}(\.\d{1,6})?((\+|\-)\d{2})?$/">
+                <!-- Boolean -->
+                <input type="text" class="form-control" name="{{key}}" ng-init="(column.source == '<UNDEFINED>') && (inputDisabled = true)" ng-model="column.source" ng-if="column.type == 'boolean'" ng-class="{'null-input': isNullValue(column.source)}" ng-disabled="inputDisabled" ng-pattern="/^(true|false)$/i">
+                <!-- Text -->
+                <textarea class="form-control" name="{{key}}" rows="1" ng-init="(column.source == '<UNDEFINED>') && (inputDisabled = true)" ng-model="column.source" ng-if="column.type == 'text'" ng-class="{'null-input': isNullValue(column.source)}" ng-disabled="inputDisabled"></textarea>
+    
+                <span class="input-group-addon btn btn-primary null-btn" ng-disabled="isNullValue(column.source)" data-toggle="modal" data-target=".modal-md-null-confirm-{{key}}">&#10008;</span>
+              </div>
+            </div>
+    
+            <div class="col-dest pull-right">
+              <input type="text" class="form-control" value="{{column.dest}}" ng-if="column.type != 'text'" disabled>
+              <textarea class="form-control" rows="1" ng-if="column.type == 'text'" disabled>{{column.dest}}</textarea>
+            </div>
+          </div>
+    
+          <div class="col-xs-12 col-md-offset-2 col-md-10">
+            <span class="input-error" ng-show="column.type == 'int' && repErrorEditForm.{{key}}.$invalid">
+              Поле принимает только целые числа
+            </span>
+            <span class="input-error" ng-show="column.type == 'double' && repErrorEditForm.{{key}}.$error.number">
+              Поле должно быть числовым
+            </span>
+            <span class="input-error" ng-show="column.type == 'boolean' && repErrorEditForm.{{key}}.$invalid">
+              Поле принимает только boolean (true или false)
+            </span>
+            <span class="input-error" ng-show="column.type == 'date' && repErrorEditForm.{{key}}.$invalid">
+              Неверный формат даты (yyyy-mm-dd)
+            </span>
+            <span class="input-error" ng-show="column.type == 'time' && repErrorEditForm.{{key}}.$invalid">
+              Неверный формат времени (hh:mm:ss)
+            </span>
+            <span class="input-error" ng-show="column.type == 'datetime' && repErrorEditForm.{{key}}.$invalid">
+              Неверный формат datetime (yyyy-mm-dd hh:mm:ss)
+            </span>
+          </div>
+        </div>
+
+        <!-- Nullable Confirmation Modal -->
+        <div id="modal-null-confirm" class="modal fade modal-md-null-confirm-{{key}}" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="modalLabel">Сообщение</h4>
+              </div>
+              <div class="modal-body">
+                <p>Вы действительно хотите обнулить значение {{key}}?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-msg btn-default" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-msg btn-default" ng-click="(column.source = null) || textareaAutosizeUpdate()" data-dismiss="modal">Подтвердить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="modal-confirm" class="modal fade modal-md-confirm" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title" id="modalLabel">Сообщение</h4>
+        </div>
+        <div class="modal-body">
+          <p>{{confirmMessage}}</p>
+          <table class="table table-bordered table-stripped table-condensed">
+            <tr>
+              <td class="fields-style">id_runner</td>
+              <td>{{tableRecord.id_runner}}</td>
+            </tr>
+            <tr>
+              <td class="fields-style">id_table</td>
+              <td>{{tableRecord.id_table}}</td>
+            </tr>
+            <tr>
+              <td class="fields-style">id_foreign</td>
+              <td>{{tableRecord.id_foreign}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-msg btn-default" data-dismiss="modal">Отмена</button>
+          <button type="button" class="btn btn-msg btn-default" ng-click="edit()" data-dismiss="modal">Подтвердить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result Modal -->
+  <div id="modal-result" class="modal fade modal-md-result" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title" id="modalLabel">Сообщение</h4>
+        </div>
+        <div class="modal-body">
+          <p class="status">Status: {{status}}</p>
+          <p>Detail: {{detail}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-msg btn-default" ng-click="goToErrorListWithDelay()" data-dismiss="modal">К списку ошибок</button>
+          <button type="button" class="btn btn-msg btn-default" ng-click="goToMainPageWithDelay()" data-dismiss="modal">На главную</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+  <div class="container">
+    <div class="nav-bottom-wrap">
+      <div class="btn-container">
+        <button type="button" class="btn btn-1 btn-default" ng-disabled="btnDisabled || repErrorEditForm.$invalid" data-toggle="modal" data-target=".modal-md-confirm">Apply</button>
+      </div>
+      <div class="copyright hidden-xs">© ООО "Технология" 2016</div>
+    </div>
+  </div>
+</nav>

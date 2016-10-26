@@ -1,0 +1,126 @@
+<div class="container">
+  <div class="rep-error">
+    <!--<a href="" class="back-btn visible-lg" ng-click="goToErrorList()">-->
+      <!--<span class="glyphicon glyphicon-arrow-left back-arrow"></span>-->
+      <!--<span class="back-url">Назад</span>-->
+    <!--</a>-->
+
+    <table>
+      <tr>
+        <td>id</td>
+        <td><input type="text" value="{{task.id}}" style="width: 400px;"></td>
+      </tr>
+      <tr>
+        <td>src</td>
+        <td><input type="text" value="{{task.src}}" style="width: 400px;"></td>
+      </tr>
+      <tr>
+        <td>algo</td>
+        <td><input type="text" value="{{task.algo}}" style="width: 400px;"></td>
+      </tr>
+      <tr>
+        <td>status</td>
+        <td><input type="text" value="{{task.status}}" style="width: 400px;"></td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td><input type="text" value="{{task.description}}" style="width: 400px;"></td>
+      </tr>
+    </table>
+
+    <h4 class="error-heading">Ошибка репликации данных</h4>
+    <div role="presentation" class="col-divider"></div>
+    
+    <div class="panel panel-default">
+      <table class="table table-custom">
+        <tr>
+          <td class="fields-style">id_runner</td>
+          <td>{{repError.id_runner}}</td>
+        </tr>
+        <tr>
+          <td class="fields-style">id_table</td>
+          <td>{{repError.id_table}}</td>
+        </tr>
+        <tr>
+          <td class="fields-style">id_foreign</td>
+          <td>{{repError.id_foreign}}</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="panel panel-log-error">
+      <div class="panel-heading">
+        <h3 class="panel-title">Лог ошибки</h3>
+      </div>
+      <div class="panel-body error-log">
+        {{repError.error_mess}}
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="modal-confirm" class="modal fade modal-md-confirm" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title" id="modalLabel">Сообщение</h4>
+        </div>
+        <div class="modal-body">
+          <p>{{confirmMessage}}</p>
+          <table class="table table-bordered table-stripped table-condensed">
+            <tr>
+              <td class="fields-style">id_runner</td>
+              <td>{{repError.id_runner}}</td>
+            </tr>
+            <tr>
+              <td class="fields-style">id_table</td>
+              <td>{{repError.id_table}}</td>
+            </tr>
+            <tr>
+              <td class="fields-style">id_foreign</td>
+              <td>{{repError.id_foreign}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-msg btn-default" data-dismiss="modal">Отмена</button>
+          <button type="button" class="btn btn-msg btn-default" ng-click="performAction()" data-dismiss="modal">Подтвердить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result Modal -->
+  <div id="modal-result" class="modal fade modal-md-result" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title" id="modalLabel">Сообщение</h4>
+        </div>
+        <div class="modal-body">
+          <p class="status">Status: {{status}}</p>
+          <p>Detail: {{detail}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-msg btn-default" ng-click="goToErrorListWithDelay()" data-dismiss="modal">К списку ошибок</button>
+          <button type="button" class="btn btn-msg btn-default" ng-click="goToMainPageWithDelay()" data-dismiss="modal">На главную</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+  <div class="container">
+    <div class="nav-bottom-wrap">
+      <div class="btn-container">
+        <button type="button" class="btn btn-2 btn-default" ng-click="edit()" ng-disabled="btnDisabled" ng-show="repErrorType == 'DELEDIT'">Edit</button>
+        <button type="button" class="btn btn-1 btn-default" ng-disabled="btnDisabled" ng-show="repErrorType == 'RECOVER'" data-toggle="modal" data-target=".modal-md-confirm">Recover</button>
+        <button type="button" class="btn btn-2 btn-default" ng-disabled="btnDisabled" ng-show="repErrorType == 'DELEDIT'" data-toggle="modal" data-target=".modal-md-confirm">Delete</button>
+      </div>
+      <div class="copyright hidden-xs">© ООО "Технология" 2016</div>
+    </div>
+  </div>
+</nav>

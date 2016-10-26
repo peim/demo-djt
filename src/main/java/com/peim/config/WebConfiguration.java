@@ -10,12 +10,11 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/web/");
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/web/app/");
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("hello");
-        registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/").setViewName("index.html");
     }
 }

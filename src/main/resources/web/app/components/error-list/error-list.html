@@ -1,0 +1,86 @@
+<div class="container">
+  <!--<div class="delay-select-wrap">-->
+    <!--<label>Ошибки активные более</label>-->
+    <!--<select class="form-control delay-select" ng-model="errorDelay" ng-options="delay.name for delay in delays" ng-change="updateErrorList()"></select>-->
+  <!--</div>-->
+  <!--ng-class="error.is_remote_call ? 'panel-remotecall' : ''"-->
+  <h1>Список задач</h1>
+  <div>
+    <table border="1">
+      <tr>
+        <td>id</td>
+        <td>src</td>
+        <td>algo</td>
+        <td>status</td>
+        <td>description</td>
+        <td>run</td>
+        <td>cancel</td>
+        <td>delete</td>
+      </tr>
+      <tr ng-repeat="task in tasks">
+        <td>{{ task.id }}</td>
+        <td>{{ task.src }}</td>
+        <td>{{ task.algo }}</td>
+        <td>{{ task.status }}</td>
+        <td>{{ task.description }}</td>
+        <td><input type="button" value="run" ng-if="canRun(task.status)" ng-click="run(task.id)"></td>
+        <td><input type="button" value="cancel" ng-if="canCancel(task.status)" ng-click="cancel(task.id)"></td>
+        <td><input type="button" value="delete" ng-if="canDelete(task.status)" ng-click="delete(task.id)"></td>
+      </tr>
+    </table>
+  </div>
+
+  <!--<div class="error-list">-->
+    <!--<div class="panel panel-custom" ng-class="" ng-repeat="task in tasks" ng-click="goToError(error)">-->
+      <!--<div class="panel-body panel-body-custom">-->
+        <!--<div class="row">-->
+          <!--<div class="col-xs-2 col-md-2 text-center">-->
+            <!--<div class="col-caption">id</div>-->
+            <!--<div class="id-runner">{{task.id}}</div>-->
+          <!--</div>-->
+          <!--<div class="col-xs-5 col-md-7 text-center">-->
+            <!--<div class="col-caption">src</div>-->
+            <!--<div class="id-table">{{task.src}}</div>-->
+            <!--&lt;!&ndash;<div class="hidden-xs">{{error.error_mess}}</div>&ndash;&gt;-->
+          <!--</div>-->
+          <!--<div class="col-xs-3 col-md-2 text-center">-->
+            <!--<div class="col-caption">algo</div>-->
+            <!--<div class="id-foreign">{{task.algo}}</div>-->
+          <!--</div>-->
+          <!--<div class="col-xs-2 col-md-1 text-center">-->
+            <!--<div class="glyphicon glyphicon-arrow glyphicon-chevron-right arrow" aria-hidden="true"></div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+
+  <!--&lt;!&ndash; Result Modal (for errors) &ndash;&gt;-->
+  <!--<div id="modal-result" class="modal fade modal-md-result" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">-->
+    <!--<div class="modal-dialog modal-md">-->
+      <!--<div class="modal-content">-->
+        <!--<div class="modal-header">-->
+          <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+          <!--<h4 class="modal-title" id="modalLabel">Сообщение</h4>-->
+        <!--</div>-->
+        <!--<div class="modal-body">-->
+          <!--<p class="status">Status: {{status}}</p>-->
+          <!--<p>Detail: {{detail}}</p>-->
+        <!--</div>-->
+        <!--<div class="modal-footer">-->
+          <!--<button type="button" class="btn btn-msg btn-default" ng-click="reloadPage()" data-dismiss="modal">К списку ошибок</button>-->
+          <!--<button type="button" class="btn btn-msg btn-default" ng-click="goToMainPageWithDelay()" data-dismiss="modal">На главную</button>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+<!--<nav class="navbar-inverse navbar-inverse-custom navbar-fixed-bottom" role="navigation">-->
+  <!--<div class="container">-->
+    <!--<div class="nav-bottom-wrap nav-bottom-list">-->
+      <!--<uib-pagination total-items="totalItems" ng-model="currentPage" max-size="paginationMaxSize" class="pagination-md" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" rotate="false" ng-change="loadActualErrors()"></uib-pagination>-->
+      <!--<div class="copyright hidden-xs">© ООО "Технология" 2016</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</nav>-->

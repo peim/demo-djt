@@ -10,7 +10,7 @@ import java.util.List;
 
 @Transactional
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/api/task")
 public class TaskController {
 
     @Autowired
