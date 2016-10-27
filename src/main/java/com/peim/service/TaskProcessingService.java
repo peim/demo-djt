@@ -1,7 +1,7 @@
 package com.peim.service;
 
-import com.peim.hash.HashAlgorithm;
-import com.peim.hash.HashAlgorithmFactory;
+import com.peim.service.hash.HashAlgorithm;
+import com.peim.service.hash.HashAlgorithmFactory;
 import com.peim.model.Task;
 import org.springframework.stereotype.Service;
 

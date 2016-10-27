@@ -1,4 +1,4 @@
-package com.peim.hash;
+package com.peim.service.hash;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

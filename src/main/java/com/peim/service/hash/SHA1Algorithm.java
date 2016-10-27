@@ -1,12 +1,12 @@
-package com.peim.hash;
+package com.peim.service.hash;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-class MD5Algorithm extends HashAlgorithm {
+class SHA1Algorithm extends HashAlgorithm {
 
     @Override
     protected MessageDigest getMessageDigest() throws NoSuchAlgorithmException {
-        return MessageDigest.getInstance("MD5");
+        return MessageDigest.getInstance("SHA-1");
     }
 }
