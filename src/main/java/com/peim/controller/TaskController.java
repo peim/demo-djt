@@ -1,14 +1,12 @@
 package com.peim.controller;
 
-import com.peim.model.Task;
 import com.peim.dao.TaskService;
+import com.peim.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Transactional
 @RestController
 @RequestMapping(path = "/api/task")
 public class TaskController {
@@ -32,8 +30,13 @@ public class TaskController {
     }
 
     @RequestMapping(path = "/add", method = RequestMethod.POST)
-    public Task addTask(@RequestBody Task author) {
-        return taskService.addTask(author);
+    public Task addTask(@RequestBody Task task) {
+        return taskService.addTask(task);
+    }
+
+    @RequestMapping(path = "/update", method = RequestMethod.PUT)
+    public void updateTask(@RequestBody Task task) {
+        taskService.updateTask(task);
     }
 
     @RequestMapping(path = "/delete/{id}", method = RequestMethod.DELETE)

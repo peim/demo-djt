@@ -3,9 +3,11 @@ package com.peim.dao;
 import com.peim.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 @Service("taskService")
 public class TaskServiceImpl implements TaskService {
 
@@ -33,6 +35,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task addTask(Task task) {
         return this.taskRepository.save(task);
+    }
+
+    @Override
+    public void updateTask(Task task) {
+        this.taskRepository.updateTask(task.getId(), task.getStatus(), task.getDescription());
     }
 
     @Override
