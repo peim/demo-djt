@@ -9,6 +9,8 @@
     "angular": "~1.4.0",
     "angular-route": "~1.4.0",
     "angular-loader": "~1.4.0",
-    "angular-bootstrap": "~1.0"
+    "angular-bootstrap": "~1.0",
+    "sockjs": "0.3.4",
+    "stomp-websocket": "2.3.4"
   }
 }

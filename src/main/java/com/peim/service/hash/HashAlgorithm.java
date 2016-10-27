@@ -17,7 +17,7 @@ public abstract class HashAlgorithm {
             }
             hash = sb.toString();
 
-            Thread.sleep(2000);
+            Thread.sleep(10000);
         }
         catch (Exception e) {
             hash = e.getMessage();

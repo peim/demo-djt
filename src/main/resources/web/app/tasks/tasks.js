@@ -9,7 +9,8 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
   });
 }])
 
-.controller('TasksCtrl', ['$scope', '$http', '$location', function($scope, $http, $location) {
+.controller('TasksCtrl', ['$scope', '$http', '$location', '$timeout', 'websocket',
+    function($scope, $http, $location, $timeout, websocket) {
 
   $scope.setTitleAndUrl('Список задач', '#/tasks');
 
@@ -64,7 +65,7 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
   }
 
   $scope.canCancel = function(status) {
-    if (status == "WAITING" || status == "PROCESSING") {
+    if (status == "PROCESSING") {
       return true;
     } else {
       return false;
@@ -98,5 +99,49 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
   }
 
   $scope.loadErrors();
+
+//  var webSocket = websocket.getInstance();
+//
+//  var initialize = function() {
+//          webSocket.init().then(function() {
+//            subscribeTasks();
+//          }, function() {
+//            console.log('Error when connecting websocket!');
+//          });
+//        };
+//
+//        var subscribeTasks = function() {
+//          webSocket.get().subscribe('/queue/task', function(data) {
+//            console.log(data);
+//            var task = JSON.parse(data.body);
+//            $scope.updateTasks(task);
+//            $scope.$evalAsync();
+//          });
+//        };
+
+   var startListener = function() {
+      $scope.socket.stomp.subscribe('/queue/task', function(data) {
+        var task = JSON.parse(data.body);
+        $scope.updateTasks(task);
+        $scope.$evalAsync();
+      });
+    }
+
+    $scope.initSockets = function() {
+      $timeout(function() {
+        $scope.socket = new SockJS('/socket');
+        $scope.socket.stomp = Stomp.over($scope.socket);
+        $scope.socket.stomp.connect({}, startListener);
+        $scope.socket.stomp.onclose = $scope.reconnect;
+      }, 1000);
+    }
+
+    $scope.reconnect = function() {
+      $timeout($scope.initSockets, 10000);
+    }
+
+    $scope.initSockets();
+
+
 
 }]);

@@ -2,7 +2,8 @@
 
 angular.module('app', [
   'ngRoute',
-  'app.tasks'
+  'app.tasks',
+  'app.websocket'
 ])
 
 .config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
