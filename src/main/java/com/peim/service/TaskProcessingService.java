@@ -67,10 +67,12 @@ public class TaskProcessingService {
 
     public void cancel(int id, DeferredResult<ResponseEntity<Task>> deferredResult) {
         Task task = taskService.getTaskById(id);
-        processingTasks.get(task).cancel(true);
-        task.setStatus("CANCELED");
-        task.setDescription("Task has been canceled");
-        taskService.updateTask(task);
+        boolean isCanceled = processingTasks.get(task).cancel(true);
+        if (isCanceled) {
+            task.setStatus("CANCELED");
+            task.setDescription("Task has been canceled");
+            taskService.updateTask(task);
+        }
         deferredResult.setResult(ResponseEntity.ok(task));
     }
 

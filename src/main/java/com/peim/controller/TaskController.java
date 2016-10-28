@@ -24,7 +24,7 @@ public class TaskController {
         return taskService.getTaskById(id);
     }
 
-    @RequestMapping(path = "/country/{country}", method = RequestMethod.GET)
+    @RequestMapping(path = "/status/{status}", method = RequestMethod.GET)
     public List<Task> getByStatus(@PathVariable String status) {
         return taskService.getTaskByStatus(status);
     }
