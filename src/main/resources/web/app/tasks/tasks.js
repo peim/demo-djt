@@ -9,25 +9,14 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
   });
 }])
 
-.controller('TasksCtrl', ['$scope', '$http', '$location', '$timeout', 'websocket',
-    function($scope, $http, $location, $timeout, websocket) {
+.controller('TasksCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.setTitleAndUrl('Список задач', '#/tasks');
-
-  $scope.loadErrors = function() {
-    $http.get('api/task/all')
-      .success(function(tasks) {
-        $scope.tasks = tasks;
-      })
-      .error(function(error) {
-        console.log(error);
-      });
-  }
 
   $scope.run = function(id) {
     $http.get('api/task/execute/' + id)
       .success(function(task) {
-        $scope.updateTasks(task);
+        updateTasks(task);
       })
       .error(function(error) {
         console.log(error);
@@ -39,7 +28,7 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
 
     $http.put('api/task/cancel/' + id)
       .success(function(task) {
-        $scope.updateTasks(task);
+        updateTasks(task);
       })
       .error(function(error) {
         console.log(error);
@@ -49,7 +38,7 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
   $scope.delete = function(id) {
     $http.delete('api/task/delete/' + id)
       .success(function() {
-        $scope.removeTask(id);
+        removeTask(id);
       })
       .error(function(error) {
         console.log(error);
@@ -80,7 +69,17 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
     }
   }
 
-  $scope.updateTasks = function(task) {
+  var loadErrors = function() {
+    $http.get('api/task/all')
+      .success(function(tasks) {
+        $scope.tasks = tasks;
+      })
+      .error(function(error) {
+        console.log(error);
+      });
+    }
+
+  var updateTasks = function(task) {
     for (var i in $scope.tasks) {
       if ($scope.tasks[i].id == task.id) {
         $scope.tasks[i].status = task.status;
@@ -90,7 +89,7 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
     }
   }
 
-  $scope.removeTask = function(id) {
+  var removeTask = function(id) {
     for (var i in $scope.tasks) {
       if ($scope.tasks[i]['id'] == id) {
         $scope.tasks.splice(i, 1);
@@ -98,50 +97,21 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
     }
   }
 
-  $scope.loadErrors();
+  var initSockets = function() {
+    var endpoint = new SockJS('/socket');
+    $scope.socket = Stomp.over(endpoint);
+    $scope.socket.connect({}, startListener);
+  }
 
-//  var webSocket = websocket.getInstance();
-//
-//  var initialize = function() {
-//          webSocket.init().then(function() {
-//            subscribeTasks();
-//          }, function() {
-//            console.log('Error when connecting websocket!');
-//          });
-//        };
-//
-//        var subscribeTasks = function() {
-//          webSocket.get().subscribe('/queue/task', function(data) {
-//            console.log(data);
-//            var task = JSON.parse(data.body);
-//            $scope.updateTasks(task);
-//            $scope.$evalAsync();
-//          });
-//        };
+  var startListener = function() {
+    $scope.socket.subscribe('/queue/task', function(data) {
+      var task = JSON.parse(data.body);
+      updateTasks(task);
+      $scope.$evalAsync();
+    });
+  }
 
-   var startListener = function() {
-      $scope.socket.stomp.subscribe('/queue/task', function(data) {
-        var task = JSON.parse(data.body);
-        $scope.updateTasks(task);
-        $scope.$evalAsync();
-      });
-    }
-
-    $scope.initSockets = function() {
-      $timeout(function() {
-        $scope.socket = new SockJS('/socket');
-        $scope.socket.stomp = Stomp.over($scope.socket);
-        $scope.socket.stomp.connect({}, startListener);
-        $scope.socket.stomp.onclose = $scope.reconnect;
-      }, 1000);
-    }
-
-    $scope.reconnect = function() {
-      $timeout($scope.initSockets, 10000);
-    }
-
-    $scope.initSockets();
-
-
+  loadErrors();
+  initSockets();
 
 }]);
