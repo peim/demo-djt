@@ -18,7 +18,7 @@ public class AsyncController {
     @Autowired
     private TaskProcessingService taskProcessingService;
 
-    @RequestMapping(path = "/task/execute/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/task/execute/{id}", method = RequestMethod.PUT)
     public DeferredResult<ResponseEntity<Task>> execute(@PathVariable(value = "id") int id) {
         final DeferredResult<ResponseEntity<Task>> deferredResult = new DeferredResult<>(300000L);
         deferredResult.onTimeout(() -> deferredResult.setErrorResult(ResponseEntity

@@ -14,7 +14,7 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
   $scope.setTitleAndUrl('Список задач', '#/tasks');
 
   $scope.run = function(id) {
-    $http.get('api/task/execute/' + id)
+    $http.put('api/task/execute/' + id)
       .success(function(task) {
         updateTasks(task);
       })
