@@ -13,22 +13,20 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
 
   $scope.setTitleAndUrl('Список задач', '#/tasks');
 
-  $scope.run = function(id) {
-    $http.put('api/task/execute/' + id)
-      .success(function(task) {
-        updateTasks(task);
+  $scope.run = function(task) {
+    $http.put('api/task/execute', task)
+      .success(function(data) {
+        updateTasks(data);
       })
       .error(function(error) {
         console.log(error);
       });
   }
 
-  $scope.cancel = function(id) {
-    console.log("cancel task " + id);
-
-    $http.put('api/task/cancel/' + id)
-      .success(function(task) {
-        updateTasks(task);
+  $scope.cancel = function(task) {
+    $http.put('api/task/cancel', task)
+      .success(function(data) {
+        updateTasks(data);
       })
       .error(function(error) {
         console.log(error);
@@ -46,7 +44,7 @@ angular.module('app.tasks', ['ngRoute', 'ui.bootstrap'])
   }
 
   $scope.canRun = function(status) {
-    if (status == "NEW") {
+    if (status == "NEW" || status == "CANCELED") {
       return true;
     } else {
       return false;

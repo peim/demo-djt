@@ -18,8 +18,8 @@
         <td>{{ task.algo }}</td>
         <td>{{ task.status }}</td>
         <td>{{ task.description }}</td>
-        <td><input type="button" value="run" data-ng-if="canRun(task.status)" data-ng-click="run(task.id)"></td>
-        <td><input type="button" value="cancel" data-ng-if="canCancel(task.status)" data-ng-click="cancel(task.id)"></td>
+        <td><input type="button" value="run" data-ng-if="canRun(task.status)" data-ng-click="run(task)"></td>
+        <td><input type="button" value="cancel" data-ng-if="canCancel(task.status)" data-ng-click="cancel(task)"></td>
         <td><input type="button" value="delete" data-ng-if="canDelete(task.status)" data-ng-click="delete(task.id)"></td>
       </tr>
     </table>

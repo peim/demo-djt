@@ -42,10 +42,6 @@ public class TaskControllerTest {
 	}
 
 	@Test
-	public void getAllTaskTest() {
-	}
-
-	@Test
 	public void getTaskByIdTest() throws Exception {
 		mockMvc
 				.perform(get("/api/task/id/1"))

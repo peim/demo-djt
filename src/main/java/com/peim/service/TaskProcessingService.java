@@ -17,6 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service("taskProcessingService")
 public class TaskProcessingService {
 
+    private final static String TASK_UPDATING_PATH = "/queue/task";
+
     @Autowired
     private TaskService taskService;
 
@@ -27,26 +29,27 @@ public class TaskProcessingService {
     private ConcurrentHashMap<Task, CompletableFuture<String>> processingTasks =
             new ConcurrentHashMap<>();
 
-    public void execute(int id, DeferredResult<ResponseEntity<Task>> deferredResult) {
-        Task task = taskService.getTaskById(id);
+    public void execute(Task task, DeferredResult<ResponseEntity<Task>> deferredResult) {
         HashAlgorithm algorithm = HashAlgorithmFactory.of(task.getAlgo());
 
         if (getExecutor().getActiveCount() == getExecutor().getMaxPoolSize()) {
             task.setStatus("WAITING");
             task.setDescription(null);
-            messagingTemplate.convertAndSend("/queue/task", task);
+            messagingTemplate.convertAndSend(TASK_UPDATING_PATH, task);
         }
 
         CompletableFuture<String> future = CompletableFuture.supplyAsync(
                 () -> {
                     task.setStatus("PROCESSING");
                     task.setDescription(null);
-                    messagingTemplate.convertAndSend("/queue/task", task);
+                    messagingTemplate.convertAndSend(TASK_UPDATING_PATH, task);
                     return algorithm.hash(task.getSrc());
                 },
                 getExecutor()
         );
+
         processingTasks.put(task, future);
+
         future.whenComplete((success, failure) -> {
             try {
                 if (failure != null) {
@@ -65,8 +68,7 @@ public class TaskProcessingService {
         });
     }
 
-    public void cancel(int id, DeferredResult<ResponseEntity<Task>> deferredResult) {
-        Task task = taskService.getTaskById(id);
+    public void cancel(Task task, DeferredResult<ResponseEntity<Task>> deferredResult) {
         boolean isCanceled = processingTasks.get(task).cancel(true);
         if (isCanceled) {
             task.setStatus("CANCELED");
