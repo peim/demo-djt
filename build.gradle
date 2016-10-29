@@ -11,17 +11,21 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("com.moowork.gradle:gradle-node-plugin:0.13")
+		classpath('se.transmode.gradle:gradle-docker:1.2')
 	}
 }
+
+group = 'spring-boot'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 apply plugin: 'com.moowork.node'
+apply plugin: 'docker'
 
 jar {
 	baseName = 'demo-djt'
-	version = '0.0.1-SNAPSHOT'
+	version = '0.0.1'
 }
 
 sourceCompatibility = 1.8
@@ -46,3 +50,15 @@ node {
 }
 
 processResources.dependsOn npm_install
+
+task buildDocker(type: Docker, dependsOn: build) {
+	push = true
+	applicationName = jar.baseName
+	dockerfile = file('src/main/docker/Dockerfile')
+	doFirst {
+		copy {
+			from jar
+			into stageDir
+		}
+	}
+}
