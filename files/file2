@@ -1,0 +1,159 @@
+2015-12-05 22:28:32 ERROR  : Error connecting to the server: FATAL:  password authentication failed for user "postgres"
+FATAL:  password authentication failed for user "postgres"
+
+2015-12-05 22:29:34 ERROR  : Error connecting to the server: FATAL:  password authentication failed for user "postgres"
+FATAL:  password authentication failed for user "postgres"
+
+2015-12-05 22:32:01 ERROR  : Error connecting to the server: fe_sendauth: no password supplied
+
+2015-12-09 19:49:57 ERROR  : ERROR:  column "id_favorite_book" of relation "reader" does not exist
+LINE 1: ...ader (id, first_name, last_name, count_read_book, id_favorit...
+                                                             ^
+2015-12-09 19:51:05 ERROR  : ERROR:  column "id_favorite_book" of relation "reader" does not exist
+LINE 1: ...ader (id, first_name, last_name, count_read_book, id_favorit...
+                                                             ^
+2015-12-09 19:52:02 ERROR  : ERROR:  column "favorite_book" does not exist
+2015-12-09 19:52:27 ERROR  : ERROR:  duplicate key value violates unique constraint "pk_reader"
+DETAIL:  Key (id)=(1) already exists.
+2015-12-09 19:55:30 ERROR  : ERROR:  value too long for type character varying(20)
+2015-12-20 09:44:00 ERROR  : Error connecting to the server: FATAL:  password authentication failed for user "admin"
+FATAL:  password authentication failed for user "admin"
+
+2016-01-01 15:22:52 ERROR  : Error connecting to the server: FATAL:  LDAP authentication failed for user "test"
+
+2016-01-05 12:49:22 ERROR  : Error connecting to the server: FATAL:  LDAP authentication failed for user "test"
+
+2016-01-13 20:36:42 ERROR  : ERROR:  permission denied for relation pga_job
+2016-01-13 20:36:44 ERROR  : Не удалось изменить расписание задания.
+2016-02-01 18:07:35 ERROR  : ERROR:  relation "t_work_note" does not exist
+LINE 2: select * from T_WORK_NOTE where id = 516046623
+                      ^
+2016-02-01 18:07:45 ERROR  : ERROR:  relation "workers.t_work_note" does not exist
+LINE 3: select * from workers.T_WORK_NOTE where id = 516046623
+                      ^
+2016-02-13 08:30:53 ERROR  : ERROR:  syntax error at or near "values"
+LINE 3: values (92, 'синий'),
+        ^
+2016-02-13 13:36:41 ERROR  : ERROR:  duplicate key value violates unique constraint "pk_t_colors"
+DETAIL:  Key (id)=(96) already exists.
+2016-02-13 13:41:43 ERROR  : ERROR:  duplicate key value violates unique constraint "pk_t_colors"
+DETAIL:  Key (id)=(95) already exists.
+2016-02-13 17:02:22 ERROR  : server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+2016-02-14 12:04:25 ERROR  : ERROR:  syntax error at or near "inset"
+LINE 3: inset into t_colors (id, c_color) values
+        ^
+2016-02-14 14:29:45 ERROR  : ERROR:  duplicate key value violates unique constraint "pk_t_colors"
+DETAIL:  Key (id)=(91) already exists.
+2016-02-14 14:56:31 ERROR  : ERROR:  syntax error at or near "$$
+declare
+  cur record;
+  _oldtable text;
+  _rex text;
+  _oldrule text;
+  _table_name text;
+  _schema_name text;
+  _rule_name text;
+  _table text;
+begin
+  _table = 'public.tz_audit';
+  _table_name = 'tz_audit';
+  _schema_name = 'public';
+  _oldtable = 'tz_audit_201605';
+  _rex = '^' || _table_name || '_\d+$';
+  for cur in
+    (
+      select distinct t.table_name as tabname
+      from information_schema.tables t
+        join information_schema.columns c on t.table_name = c.table_name
+          where t.table_schema = 'partitions'
+            and t.table_name ~ _rex
+            and t.table_name<_oldtable
+      order by t.table_name
+    )
+  loop
+    _rule_name = 'rule4_' || cur.tabname;
+
+    raise notice '[drop_partitions()] DROP RULE IF EXISTS % - %', _rule_name, _table;
+    raise notice '[drop_partitions()] DROP RULE IF EXISTS % - %', cur.tabname, _parent_table_name;
+    //execute 'DROP RULE IF EXISTS ' || _rule_name || ' ON ' || _table;
+    //execute 'ALTER TABLE ' || cur.tabname || ' NO INHERIT ' || _parent_table_name || ';';
+  end loop;
+end;$$"
+LINE 1: $$
+        ^
+2016-02-14 14:57:10 ERROR  : ERROR:  syntax error at or near "//"
+LINE 32:     //execute 'DROP RULE IF EXISTS ' || _rule_name || ' ON '...
+             ^
+2016-02-14 14:57:22 ERROR  : ERROR:  column "_parent_table_name" does not exist
+LINE 1: SELECT _parent_table_name
+               ^
+QUERY:  SELECT _parent_table_name
+CONTEXT:  PL/pgSQL function inline_code_block line 31 at RAISE
+2016-02-14 14:59:37 ERROR  : ERROR:  relation "tz_audit_201511" does not exist
+CONTEXT:  SQL statement "ALTER TABLE tz_audit_201511 NO INHERIT public.tz_audit;"
+PL/pgSQL function inline_code_block line 33 at EXECUTE statement
+2016-02-14 15:04:15 ERROR  : ERROR:  cannot alter type of a column used by a view or rule
+DETAIL:  rule _RETURN on view va_audit depends on column "id"
+2016-02-14 15:04:33 ERROR  : ERROR:  syntax error at or near "bigint"
+LINE 2: alter table tz_audit alter column id bigint
+                                             ^
+2016-02-14 15:05:52 ERROR  : ERROR:  cannot alter type of a column used by a view or rule
+DETAIL:  rule _RETURN on view va_audit depends on column "id"
+2016-02-14 15:34:19 ERROR  : could not receive data from server: Время ожидания соединения истекло
+2016-02-14 16:04:46 ERROR  : ERROR:  syntax error at or near "only"
+LINE 1: select count(*) from tz_audit only
+                                      ^
+2016-02-15 20:20:04 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:06 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:08 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:09 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:10 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:13 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:16 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:17 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:17 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:17 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:17 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:17 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:17 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:18 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:18 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:18 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:18 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:18 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:18 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:18 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:19 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:19 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:20 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:20 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:20 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:20:20 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:28:57 ERROR  : Error connecting to the server: не удалось подключиться к серверу: В соединении отказано
+	Он действительно работает по адресу "localhost" (127.0.0.1)
+	 и принимает TCP-соединения (порт 5432)?
+
+2016-02-15 20:29:34 ERROR  : Column not found in pgSet: rolcatupdate
+2016-02-15 20:29:36 ERROR  : Column not found in pgSet: rolcatupdate
+ERROR  : 20:33:41: Ошибка: Error connecting to the server: не удалось подключиться к серверу: В соединении отказано
+	Он действительно работает по адресу "localhost" (127.0.0.1)
+	 и принимает TCP-соединения (порт 5432)?
+
+ERROR  : 20:38:36: Ошибка: Error connecting to the server: не удалось подключиться к серверу: В соединении отказано
+	Он действительно работает по адресу "localhost" (127.0.0.1)
+	 и принимает TCP-соединения (порт 5432)?
+
+ERROR  : 21:34:56: Ошибка: ОШИБКА:  база данных "localdb" занята другими пользователями
+ПОДРОБНОСТИ:  Эта база данных используется ещё в 1 сеансе.
+ERROR  : 21:40:10: ОШИБКА:  не удалось открыть управляющий файл расширения "/usr/share/postgresql/9.5/extension/amqp.control": Нет такого файла или каталога
+ERROR  : 21:50:54: Ошибка: ВАЖНО:  закрытие подключения по команде администратора
+сервер неожиданно закрыл соединение
+	Скорее всего сервер прекратил работу из-за сбоя
+	до или в процессе выполнения запроса.
+ERROR  : 08:21:40: Ошибка: Error connecting to the server: сервер неожиданно закрыл соединение
+	Скорее всего сервер прекратил работу из-за сбоя
+	до или в процессе выполнения запроса.
+
+ERROR  : 10:52:24: Ошибка: Error connecting to the server: FATAL:  LDAP authentication failed for user "test"

@@ -28,7 +28,7 @@ public class TaskProcessingService {
     private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    private JavaSparkContext sparkContext;
+    private HashService hashService;
 
     private ThreadPoolTaskExecutor executor;
     private ConcurrentHashMap<Task, CompletableFuture<String>> processingTasks =
@@ -43,12 +43,6 @@ public class TaskProcessingService {
     }
 
     public void execute(Task task, DeferredResult<ResponseEntity<Task>> deferredResult) {
-        HashAlgorithm algorithm = HashAlgorithmFactory.of(task.getAlgo());
-
-
-        JavaRDD<String> input = sparkContext.textFile("import.sql");
-        System.out.println(input.count());
-
         if (executor.getActiveCount() == executor.getMaxPoolSize()) {
             task.setStatus("WAITING");
             task.setDescription(null);
@@ -60,7 +54,7 @@ public class TaskProcessingService {
                     task.setStatus("PROCESSING");
                     task.setDescription(null);
                     messagingTemplate.convertAndSend(TASK_UPDATING_PATH, task);
-                    return algorithm.hash(task.getSrc());
+                    return hashService.hash(task);
                 },
                 executor
         );

@@ -1,25 +1,24 @@
 package com.peim.service.hash;
 
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public abstract class HashAlgorithm {
+public abstract class HashAlgorithm implements Serializable {
 
-    public String hash(String src) {
+    public String hash(String line) {
         String hash;
         try {
             MessageDigest md = getMessageDigest();
-            md.update(src.getBytes());
-            byte byteData[] = md.digest();
+            md.update(line.getBytes());
             StringBuilder sb = new StringBuilder();
-            for (byte element : byteData) {
+            for (byte element : md.digest()) {
                 sb.append(Integer.toString((element & 0xff) + 0x100, 16).substring(1));
             }
             hash = sb.toString();
-
-            Thread.sleep(10000);
         }
         catch (Exception e) {
+            e.printStackTrace();
             hash = e.getMessage();
         }
         return hash;

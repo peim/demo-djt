@@ -11,8 +11,8 @@ public class SparkConfiguration {
     @Bean
     public JavaSparkContext sparkContext() {
         SparkConf conf = new SparkConf()
-                .setMaster("local")
-                .setAppName("demo-djt-spark");
+                .setAppName("demo-djt-spark")
+                .setMaster("local[4]");
         JavaSparkContext sparkContext = new JavaSparkContext(conf);
         return sparkContext;
     }
