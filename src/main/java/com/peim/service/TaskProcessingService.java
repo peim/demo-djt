@@ -4,6 +4,8 @@ import com.peim.model.Task;
 import com.peim.service.dao.TaskService;
 import com.peim.service.hash.HashAlgorithm;
 import com.peim.service.hash.HashAlgorithmFactory;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -25,14 +27,29 @@ public class TaskProcessingService {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
+    @Autowired
+    private JavaSparkContext sparkContext;
+
     private ThreadPoolTaskExecutor executor;
     private ConcurrentHashMap<Task, CompletableFuture<String>> processingTasks =
             new ConcurrentHashMap<>();
 
+    public TaskProcessingService() {
+        executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(2);
+        executor.setQueueCapacity(20);
+        executor.initialize();
+    }
+
     public void execute(Task task, DeferredResult<ResponseEntity<Task>> deferredResult) {
         HashAlgorithm algorithm = HashAlgorithmFactory.of(task.getAlgo());
 
-        if (getExecutor().getActiveCount() == getExecutor().getMaxPoolSize()) {
+
+        JavaRDD<String> input = sparkContext.textFile("import.sql");
+        System.out.println(input.count());
+
+        if (executor.getActiveCount() == executor.getMaxPoolSize()) {
             task.setStatus("WAITING");
             task.setDescription(null);
             messagingTemplate.convertAndSend(TASK_UPDATING_PATH, task);
@@ -45,7 +62,7 @@ public class TaskProcessingService {
                     messagingTemplate.convertAndSend(TASK_UPDATING_PATH, task);
                     return algorithm.hash(task.getSrc());
                 },
-                getExecutor()
+                executor
         );
 
         processingTasks.put(task, future);
@@ -76,16 +93,5 @@ public class TaskProcessingService {
             taskService.updateTask(task);
         }
         deferredResult.setResult(ResponseEntity.ok(task));
-    }
-
-    private ThreadPoolTaskExecutor getExecutor() {
-        if (executor == null) {
-            executor = new ThreadPoolTaskExecutor();
-            executor.setCorePoolSize(2);
-            executor.setMaxPoolSize(2);
-            executor.setQueueCapacity(20);
-            executor.initialize();
-        }
-        return executor;
     }
 }
