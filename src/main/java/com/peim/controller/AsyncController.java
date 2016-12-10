@@ -34,4 +34,5 @@ public class AsyncController {
         taskProcessingService.cancel(task, deferredResult);
         return deferredResult;
     }
+
 }
